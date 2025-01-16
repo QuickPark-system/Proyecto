@@ -303,10 +303,13 @@ figure {
   margin: 0 0 1rem;
 }
 
+<<<<<<< HEAD
 img {
   width: 80%;
 
 }
+=======
+>>>>>>> 6a77c330f08e836ececac0501d6711d7a6601b9f
 img,
 svg {
   vertical-align: middle;
