@@ -18,4 +18,5 @@ try {
 
 $URL = "http://localhost/www.quickparkse.com/";
 
+$estado_del_registro = "1";
 ?>
