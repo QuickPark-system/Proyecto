@@ -23,6 +23,7 @@ foreach($informacions as $informacion){
 
 
 //cargar la información del ticket
+
 $query_tickets = $pdo->prepare("SELECT * FROM tb_tickets WHERE estado = '1' ");
 $query_tickets->execute();
 $tickets = $query_tickets->fetchAll(PDO::FETCH_ASSOC);
@@ -34,6 +35,7 @@ foreach($tickets as $ticket){
     $fecha_ingreso = $ticket['fecha_ingreso'];
     $hora_ingreso = $ticket['hora_ingreso'];
     $user_sesion = $ticket['user_sesion'];
+    $placa_auto = $ticket['placa_auto'];
 }
 
 //informacion de usuarios
@@ -57,8 +59,7 @@ foreach($roles as $role) {
 
 
 
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(79,120), true, 'UTF-8', false);
-
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(79, 150), true, 'UTF-8', false);
 
 $pdf->setCreator(PDF_CREATOR);
 $pdf->setAuthor('Nicola Asuni');
@@ -89,22 +90,30 @@ if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
     $pdf->setLanguageArray($l);
 }
 
+
+
 // ---------------------------------------------------------
 
 // set font
-$pdf->setFont('Helvetica', '', 8);
+$pdf->SetFont('helvetica', '', 7);
 
 // add a page
 $pdf->AddPage();
 
+$pdf->SetFont('helvetica', '', 7);
+
+
+// print a message
+$txt = "";
+$pdf->MultiCell(5, 5, $txt, 0, 'J', false, 1, 0, 0, true, 0, false, true, 0, 'T', false);
 
 
 
-// create some HTML content
+//Create some HTML content
 $html = '
 <div>
     <p style="text-align: center">
-        <b>'.$nombre_parqueo.'</b> <br>
+        <b style="font-size: larger">'.$nombre_parqueo.'</b> <br>
         '.$actividad_empresa.' <br>
         SUCURSAL '.$sucursal.' <br>
         '.$telefono.' <br>
@@ -115,15 +124,15 @@ $html = '
         <b style="font-size: large">['.$fecha_ingreso.' '.$hora_ingreso.']</b> 
         ---------------------------------------------------------------------------
         <div style="text-align: left">
-            <b>DATOS DEL CLIENTE</b> <br>
-            <b>SEÑOR(A): </b> '.$nombre_cliente.' <br>
-            <b>CI.: </b> '.$nit_ci.'  <br>
+            <b style="font-size: larger">DATOS DEL REGISTRO</b> <br>
+            <b style="font-size: large">RESPONSABLE: '.$nombre_cliente.'</b>  <br>
+            <b style="font-size: large">CI.: '.$nit_ci.'</b>   <br>
+            <b style="font-size: large">PLACA: '.$placa_auto.'</b>  <br>
 
          -------------------------------------------------------------------------- <br>
-         <b>USUARIO: </b> '.$user_sesion.' - '.$nombre_rol.'<br>
+         <b style="font-size: large">USUARIO: '.$user_sesion.'</b> <br>
          -------------------------------------------------------------------------- <br>
-         <i style="text-align: center"><b></b></i>
-        
+         
         
         
         </div>
@@ -131,16 +140,49 @@ $html = '
     
 
 </div>
+
 ';
+
 
 // output the HTML content
 $pdf->writeHTML($html, true, false, true, false, '');
 
 
+// Ajustar el tamaño de la fuente
+$pdf->SetFont('', '', 6); // Cambia '10' al tamaño de fuente deseado
+
+
+// set style for barcode
+$style = array(
+    'border' => true,
+    'vpadding' => 'auto',
+    'hpadding' => 'auto',
+    'fgcolor' => array(0,0,0),
+    'bgcolor' => false, //array(255,255,255)
+    'module_width' => 1, // width of a single module in points
+    'module_height' => 1 // height of a single module in points
+);
+
+// write RAW 2D Barcode
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// set style for barcode
+$style = array(
+    'border' => 2,
+    'vpadding' => 'auto',
+    'hpadding' => 'auto',
+    'fgcolor' => array(0,0,0),
+    'bgcolor' => false, //array(255,255,255)
+    'module_width' => 1, // width of a single module in points
+    'module_height' => 1 // height of a single module in points
+);
 
 
 
-
+// QRCODE,M : QR-CODE Medium error correction
+$pdf->write2DBarcode($cuviculo, 'QRCODE,Q', 10, 80, 55, 55, $style, 'N    ');
+$pdf->Text(5, 5, '');
 
 
 //Close and output PDF document

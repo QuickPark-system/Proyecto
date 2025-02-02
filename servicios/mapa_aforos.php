@@ -15,7 +15,7 @@ include('../layout/admin/datos_usuario_sesion.php');
         <br>
         <div class="container">
 
-            <p class="fs-1" style="font-size: 40px; margin-left: 15px"><b>Listado de Puestos</b></p>
+            <p class="fs-1" style="font-size: 40px"><b>Listado de Puestos</b></p>
 
             <br>
 
@@ -66,11 +66,11 @@ include('../layout/admin/datos_usuario_sesion.php');
                             $contador = $contador + 1;
                             ?>
                             <tr>
-                                <td><center><?php echo $contador;?></center></td>
+                                <td><center><?php echo $id_map;?></center></td>
                                 <td><?php echo $nro_espacio;?></td>
                                 <td>
                                     <center>
-                                        <a href="delete.php?id=<?php echo $id_rol; ?>" class="btn btn-outline-danger">Borrar</a>
+                                        <a href="delete.php?id=<?php echo $id_rol; ?>" class="btn btn-outline-danger"><b>Eliminar</b></a>
                                     </center>
                                 </td>
                             </tr>
@@ -84,7 +84,7 @@ include('../layout/admin/datos_usuario_sesion.php');
             </div>
 
             <hr>
-            <a href="generar-reporte.php" class="btn btn-primary">Generar reporte
+            <a href="generar-reporte.php" class="btn btn-secondary">Generar reporte
                 <i class="fa fa">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-bar-graph" viewBox="0 0 16 16">
                         <path d="M10 13.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v6zm-2.5.5a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1zm-3 0a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-1z"/>
